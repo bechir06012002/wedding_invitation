@@ -163,6 +163,29 @@
             transform: scaleX(-1);
         }
 
+        /* Falling petals: a few soft blush petals drift down slowly */
+        .petal {
+            position: absolute;
+            top: -40px;
+            left: var(--x);
+            width: var(--s);
+            height: calc(var(--s) * 1.4);
+            border-radius: 0 100% 0 100%;
+            background: linear-gradient(135deg, #ffffff 0%, var(--blush) 100%);
+            opacity: 0.55;
+            animation: fall var(--t) linear var(--d) infinite;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            to {
+                transform: translate(60px, 110vh) rotate(420deg);
+            }
+        }
+
         /* Vignette: darker edges pull the eye toward the centre */
         .vignette {
             position: absolute;
@@ -346,8 +369,9 @@
 
         /* Hint sits on the bottom pocket */
         .envelope-hint {
-            top: auto;
-            bottom: 7%;
+            /* Sits on the flap, in the upper-middle of the envelope */
+            top: 38%;
+            bottom: auto;
             left: 0;
             right: 0;
             text-align: center;
@@ -435,6 +459,8 @@
             text-align: center;
             opacity: 0;
             visibility: hidden;
+            /* Starts fully clipped at the bottom, so the card rises out of the envelope */
+            clip-path: inset(100% 0 0 0);
             transform: translateY(28%) scale(0.94);
         }
 
@@ -443,10 +469,12 @@
             visibility: visible;
             transform: translateY(0) scale(1);
             width: min(94vw, 720px);
+            clip-path: inset(0 0 0 0);
             transition:
                 opacity 1.8s ease 1.4s,
                 transform 2.6s var(--ease) 1.4s,
                 width 2s var(--ease) 1.4s,
+                clip-path 2.4s var(--ease) 1.2s,
                 visibility 0s linear 1.4s;
         }
 
@@ -479,6 +507,28 @@
         .corner--right {
             right: -8px;
             transform: scaleX(-1);
+        }
+
+        /* Top corner sprigs: soft, mirrored, sitting above the satin drape */
+        .spray {
+            position: absolute;
+            top: -18px;
+            width: 110px;
+            height: 110px;
+            color: var(--blush);
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .spray--left {
+            left: -22px;
+            transform: rotate(10deg);
+        }
+
+        .spray--right {
+            right: -22px;
+            transform: scaleX(-1) rotate(10deg);
         }
 
         /* ===== Top Ornament (satin drape + rosette crest) ===== */
@@ -599,12 +649,35 @@
             filter: drop-shadow(0 2px 6px rgba(138, 106, 59, 0.22));
         }
 
+        /* Slow gold shimmer across the names, like light moving over metal */
+        .name {
+            background-size: 200% 100%;
+            animation: goldShimmer 9s ease-in-out infinite;
+        }
+
+        @keyframes goldShimmer {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Pull the second name up so the gap above and below the ornament looks even */
+        .name--bride {
+            margin-top: -0.3em;
+        }
+
         .names-ornament {
             display: block;
-            width: 36px;
-            height: 36px;
-            margin: 2px auto;
-            color: var(--blush-deep);
+            width: 51px;
+            height: 87px;
+            margin: 0 auto;
+            object-fit: contain;
         }
 
         /* ===== Divider ===== */
@@ -680,6 +753,16 @@
             font-weight: 700;
             color: var(--gold-deep);
             line-height: 1.4;
+        }
+
+        /* Small gold line icon placed inline before the time and venue text */
+        .meta-icon {
+            display: inline-block;
+            width: 33px;
+            height: 33px;
+            margin-inline-end: 10px;
+            vertical-align: -8px;
+            color: var(--gold);
         }
 
         /* ===== Time ===== */
@@ -917,6 +1000,20 @@
             <circle cx="50" cy="50" r="3" fill="#fffaf0" />
         </symbol>
 
+        <!-- Line icons: clock (time) and location pin (venue) -->
+        <symbol id="icon-clock" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7 V12 L15.5 14" />
+            </g>
+        </symbol>
+        <symbol id="icon-pin" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+                <path d="M12 21 C12 21 19 14.6 19 10 A7 7 0 0 0 5 10 C5 14.6 12 21 12 21 Z" />
+                <circle cx="12" cy="10" r="2.6" />
+            </g>
+        </symbol>
+
         <!-- Leaf -->
         <symbol id="leaf" viewBox="0 0 40 20">
             <path d="M0 10 C10 0 28 0 40 10 C28 20 10 20 0 10 Z" fill="currentColor" />
@@ -962,6 +1059,13 @@
         <div class="grain"></div>
         <div class="arch"></div>
         <div class="vignette"></div>
+        <span class="petal" style="--x: 8%; --s: 12px; --d: 0s; --t: 16s"></span>
+        <span class="petal" style="--x: 22%; --s: 9px; --d: 3s; --t: 19s"></span>
+        <span class="petal" style="--x: 37%; --s: 14px; --d: 7s; --t: 15s"></span>
+        <span class="petal" style="--x: 52%; --s: 10px; --d: 1.5s; --t: 21s"></span>
+        <span class="petal" style="--x: 66%; --s: 13px; --d: 9s; --t: 17s"></span>
+        <span class="petal" style="--x: 80%; --s: 9px; --d: 5s; --t: 18s"></span>
+        <span class="petal" style="--x: 92%; --s: 12px; --d: 11s; --t: 20s"></span>
 
         <svg class="arr arr--tl" viewBox="0 0 300 300" focusable="false">
             <use href="#arrangement" width="300" height="300" />
@@ -1082,6 +1186,14 @@
                 <use href="#sprig" width="200" height="200" />
             </svg>
 
+            <!-- Top corner sprigs peeking from the arch -->
+            <svg class="spray spray--left" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+                <use href="#sprig" width="200" height="200" />
+            </svg>
+            <svg class="spray spray--right" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+                <use href="#sprig" width="200" height="200" />
+            </svg>
+
             <!-- Top: satin drape with pearl strands and crest -->
             <header class="top-art">
                 <svg class="drape" viewBox="0 0 400 150" aria-hidden="true" focusable="false">
@@ -1139,15 +1251,11 @@
 
                 <h1 class="names reveal" style="--delay: 0.72s">
                     <span class="name name--groom">محمد العروسي</span>
-                    <svg class="names-ornament" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-                        <use href="#bloom" />
-                    </svg>
+                    <img class="names-ornament" src="assets/names-ornament.png" alt="" aria-hidden="true">
                     <span class="name name--bride">وصال</span>
                 </h1>
 
-                <div class="divider reveal" style="--delay: 0.86s" role="presentation">
-                    <span class="divider-gem"></span>
-                </div>
+                <div class="divider reveal" style="--delay: 0.86s" role="presentation"></div>
 
                 <p class="date-lead reveal" style="--delay: 0.98s">وذلك بمشيئة الله</p>
 
@@ -1156,14 +1264,14 @@
                     <span class="date-full">28 أكتوبر 2026</span>
                 </div>
 
-                <p class="time reveal" style="--delay: 1.2s">علي ساعه الخامسه ونصف</p>
+                <p class="time reveal" style="--delay: 1.2s">
+                    <svg class="meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-clock" /></svg>علي ساعه الخامسه ونصف
+                </p>
 
-                <p class="venue reveal" style="--delay: 1.32s">بحي الشرفة نفطة</p>
+                <p class="venue reveal" style="--delay: 1.32s">
+                    <svg class="meta-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#icon-pin" /></svg>بحي الشرفة نفطة
+                </p>
 
-                <svg class="flower reveal" style="--delay: 1.34s" viewBox="0 0 60 60" aria-hidden="true"
-                    focusable="false">
-                    <use href="#rosette" />
-                </svg>
 
                 <p class="closing-line reveal" style="--delay: 1.46s">ولكم العاقبة في الأفراح والمسرات</p>
 
