@@ -288,7 +288,8 @@
         /* Envelope body */
         .envelope-back {
             border-radius: 10px;
-            background: linear-gradient(160deg, var(--white) 0%, var(--cream) 100%);
+            /* Deep warm brown at the top, easing into the beige that carries the pockets */
+            background: linear-gradient(160deg, #4a3526 0%, #6e5139 30%, #b89f7c 62%, #e6d7bd 100%);
             box-shadow:
                 0 36px 70px -28px rgba(104, 78, 40, 0.42),
                 0 0 0 1px rgba(184, 148, 93, 0.45),
@@ -368,9 +369,9 @@
         }
 
         /* Hint sits on the bottom pocket */
-        .envelope-hint {
-            /* Sits on the flap, in the upper-middle of the envelope */
-            top: 38%;
+        .envelope > .envelope-hint {
+            /* Sits at the top of the flap, where it currently appears */
+            top: 3%;
             bottom: auto;
             left: 0;
             right: 0;
@@ -381,6 +382,27 @@
             z-index: 6;
             pointer-events: none;
             animation: hintPulse 3s ease-in-out infinite;
+        }
+
+        /* Invitation text on the upper flap, in the calligraphy used for the names */
+        .envelope > .envelope-invite {
+            position: absolute;
+            top: 21%;
+            left: 0;
+            right: 0;
+            z-index: 6;
+            text-align: center;
+            font-family: var(--font-text);
+            font-size: clamp(1.1rem, 4vw, 1.35rem);
+            font-weight: 700;
+            line-height: 1.9;
+            color: var(--gold-deep);
+            pointer-events: none;
+        }
+
+        .stage.is-open .envelope-invite {
+            opacity: 0;
+            transition: opacity 0.8s ease;
         }
 
         /* Soft light sweep across the envelope to invite the click */
@@ -449,7 +471,10 @@
             position: relative;
             z-index: 1;
             max-width: 100%;
-            background: linear-gradient(180deg, var(--white) 0%, var(--ivory) 35%, var(--cream) 100%);
+            /* Layered paper: a soft light glow from the top, then a gentle warm fade to the base tone */
+            background:
+                radial-gradient(ellipse 80% 45% at 50% 0%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%),
+                linear-gradient(180deg, var(--white) 0%, var(--ivory) 35%, var(--cream) 100%);
             /* Moorish arch silhouette at the top, echoing Tunisian doorways */
             border-radius: 50% 50% 8px 8px / 16% 16% 8px 8px;
             box-shadow:
@@ -1170,6 +1195,8 @@
                         fill="none" stroke="#b8945d" stroke-width="1.6" stroke-linejoin="round" />
                     <circle cx="200" cy="60" r="2" fill="#3f6e8c" />
                 </svg>
+
+                <span class="envelope-invite">زارا الفرح دارنا<br>ندعوكم بكل حب للحضور</span>
 
                 <span class="envelope-hint">اضغط لفتح الدعوة</span>
             </button>
