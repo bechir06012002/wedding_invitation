@@ -556,10 +556,12 @@
         }
 
         .family {
-            font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+            /* Each family name stays on one line; the size scales down on phones so both fit */
+            font-size: clamp(0.8rem, 3.2vw, 1.3rem);
             font-weight: 700;
             color: var(--ink);
             line-height: 1.9;
+            white-space: nowrap;
         }
 
         .families-sep {
@@ -814,7 +816,7 @@
 
         @media (max-width: 380px) {
             .content {
-                padding-inline: 20px;
+                padding-inline: 14px;
             }
 
             .closing {
