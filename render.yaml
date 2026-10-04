@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: wedding-invitation
+    runtime: static
+    buildCommand: echo "No build needed for static site"
+    staticPublishPath: .
